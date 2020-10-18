@@ -12,7 +12,7 @@ public class MyRenderPipeline : RenderPipeline
         foreach (var camera in cameras) {
             context.SetupCameraProperties(camera);
 
-            // Очищаем буфер экрана
+            // РћС‡РёС‰Р°РµРј Р±СѓС„РµСЂ СЌРєСЂР°РЅР°
 
             clearBuffer.Clear();
 
@@ -24,14 +24,14 @@ public class MyRenderPipeline : RenderPipeline
 
             context.ExecuteCommandBuffer(clearBuffer);
 
-            // Рисуем объекты редактора
+            // Р РёСЃСѓРµРј РѕР±СЉРµРєС‚С‹ СЂРµРґР°РєС‚РѕСЂР°
 
           #if UNITY_EDITOR
             if (camera.cameraType == CameraType.SceneView)
                 ScriptableRenderContext.EmitWorldGeometryForSceneView(camera);
           #endif
 
-            // Отсекаем невидимые объекты
+            // РћС‚СЃРµРєР°РµРј РЅРµРІРёРґРёРјС‹Рµ РѕР±СЉРµРєС‚С‹
 
             ScriptableCullingParameters cullingParameters;
             if (!camera.TryGetCullingParameters(out cullingParameters))
@@ -39,7 +39,7 @@ public class MyRenderPipeline : RenderPipeline
 
             CullingResults cullingResults = context.Cull(ref cullingParameters);
 
-            // Рисуем непрозрачные объекты
+            // Р РёСЃСѓРµРј РЅРµРїСЂРѕР·СЂР°С‡РЅС‹Рµ РѕР±СЉРµРєС‚С‹
 
             var opaqueSortingSettings = new SortingSettings(camera);
             opaqueSortingSettings.criteria = SortingCriteria.CommonOpaque;
@@ -48,12 +48,12 @@ public class MyRenderPipeline : RenderPipeline
             var opaqueFilteringSettings = new FilteringSettings(RenderQueueRange.opaque);
             context.DrawRenderers(cullingResults, ref opaqueDrawingSettings, ref opaqueFilteringSettings);
 
-            // Рисуем небо
+            // Р РёСЃСѓРµРј РЅРµР±Рѕ
 
             if (camera.clearFlags == CameraClearFlags.Skybox && RenderSettings.skybox != null)
                 context.DrawSkybox(camera);
 
-            // Рисуем прозрачные объекты
+            // Р РёСЃСѓРµРј РїСЂРѕР·СЂР°С‡РЅС‹Рµ РѕР±СЉРµРєС‚С‹
 
             var transparentSortingSettings = new SortingSettings(camera);
             transparentSortingSettings.criteria = SortingCriteria.CommonTransparent;
@@ -62,7 +62,7 @@ public class MyRenderPipeline : RenderPipeline
             var transparentFilteringSettings = new FilteringSettings(RenderQueueRange.transparent);
             context.DrawRenderers(cullingResults, ref transparentDrawingSettings, ref transparentFilteringSettings);
 
-            // Отправляем на отрисовку
+            // РћС‚РїСЂР°РІР»СЏРµРј РЅР° РѕС‚СЂРёСЃРѕРІРєСѓ
 
             context.Submit();
         }
